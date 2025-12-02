@@ -4,6 +4,7 @@ services:
     name: redapstyle
     env: node
     plan: free # 'free' é ótimo para começar, mas você pode mudar para 'starter' se precisar de mais recursos.
+    rootDir: . # Garante que os comandos rodem a partir da raiz do projeto
     buildCommand: "npm install && npm run build"
     startCommand: "node server.js"
     envVars:
