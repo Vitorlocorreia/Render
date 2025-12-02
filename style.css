@@ -1,0 +1,62 @@
+/* Reset e fonte */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background-color: #121212; color: #e0e0e0; }
+a { color: inherit; text-decoration: none; }
+.container { width: 90%; max-width: 1200px; margin: auto; padding: 20px; }
+
+/* Header */
+header { text-align: center; padding: 20px 0; border-bottom: 1px solid #333; }
+header h1 { font-size: 2.5rem; color: #00b894; }
+header p { font-size: 1rem; color: #aaa; }
+
+/* Mapa */
+#map {
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Painel de sensores */
+.sensor-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.sensor-card {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.sensor-card strong { display: block; margin-bottom: 10px; font-size: 1.1rem; }
+.sensor-value { font-size: 1.5rem; font-weight: bold; }
+
+/* Status cores */
+.status-normal { color: #00b894; }    /* Verde */
+.status-alerta { color: #fdcb6e; }    /* Amarelo */
+.status-risco { color: #e17055; }     /* Laranja */
+.status-critica { color: #d63031; }  /* Vermelho */
+
+/* Alertas */
+.logs {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.logs h2 { margin-bottom: 10px; color: #00b894; }
+.logs ul { list-style-type: none; }
+.logs li { padding: 5px 0; border-bottom: 1px solid #333; }
+
+/* Footer */
+footer { text-align: center; padding: 15px 0; border-top: 1px solid #333; font-size: 0.9rem; color: #777; }
+
+/* Responsividade */
+@media(max-width: 600px){
+  header h1 { font-size: 2rem; }
+  .sensor-card { padding: 10px; }
+  .sensor-value { font-size: 1.3rem; }
+}
