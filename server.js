@@ -32,9 +32,7 @@ app.post('/api/validate-totp', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+app.get(/.*/, (req, res) => {
 
 
 // Usa a porta fornecida pelo Render (process.env.PORT) ou 4000 como padrão
