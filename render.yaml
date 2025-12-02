@@ -10,5 +10,6 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20" # Especifica a versão do Node.js para compatibilidade
-      - key: TOTP_SECRET # Adicionado para autenticação de dois fatores
+      - key: TOTP_SECRET
+        value: "JBSWY3DPEHPK3PXP"
         generateValue: true # Gera um valor aleatório seguro no primeiro deploy
