@@ -22,18 +22,29 @@ app.post('/api/validate-totp', (req, res) => {
   if (!token || typeof token !== 'string') {
     return res.status(400).json({ valid: false, error: 'Token ausente' });
   }
-  const valid = authenticator.check(token, TOTP_SECRET);
-  res.json({ valid });
+  try {
+    const valid = authenticator.check(token, TOTP_SECRET);
+    res.json({ valid });
+  } catch (err) {
+    console.error("Erro na validação do TOTP:", err);
+    res.status(500).json({ valid: false, error: 'Erro interno do servidor.' });
+  }
 });
 
 // --- Servir o Frontend ---
-// Para qualquer outra rota, sirva o index.html do frontend
-// Isso é essencial para Single-Page Applications (SPA) como o React
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// Para qualquer outra rota não capturada acima (como /api), sirva o app React.
+// Isso é essencial para Single-Page Applications (SPA) que usam roteamento no lado do cliente.
 app.get(/.*/, (req, res) => {
-
+  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      // Se o arquivo não for encontrado, envia uma mensagem de erro clara.
+      // Isso geralmente acontece se o build do frontend (npm run build) falhou.
+      console.error("Falha ao servir 'index.html':", err);
+      res.status(500).send('Erro no servidor: index.html não encontrado. Verifique se o build do frontend foi concluído com sucesso.');
+    }
+  });
+});
 
 // Usa a porta fornecida pelo Render (process.env.PORT) ou 4000 como padrão
 const PORT = process.env.PORT || 4000;
@@ -41,13 +52,13 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 
-  // ---- DIAGNÓSTICO PARA RENDER ----
+  // ---- VERIFICAÇÃO INICIAL ----
   const indexPath = path.join(__dirname, 'dist', 'index.html');
-  console.log(`[Diagnóstico] Verificando se o arquivo existe em: ${indexPath}`);
+  console.log(`[Status] Verificando o arquivo de entrada do frontend em: ${indexPath}`);
   if (fs.existsSync(indexPath)) {
-    console.log('[Diagnóstico] SUCESSO: Arquivo index.html encontrado. O frontend foi construído corretamente.');
+    console.log('[Status] SUCESSO: index.html encontrado. O servidor está pronto para servir o frontend.');
   } else {
-    console.error('[Diagnóstico] ERRO CRÍTICO: Arquivo index.html NÃO encontrado. O build do frontend falhou. Verifique o log de BUILD no Render para encontrar o erro no comando "npm run build".');
+    console.error('[Status] ALERTA: index.html NÃO encontrado no caminho esperado. O servidor iniciou, mas não poderá servir o frontend até que o arquivo seja gerado pelo comando de build ("npm run build"). Verifique os logs de build do seu deploy.');
   }
-  // ---- FIM DO DIAGNÓSTICO ----
+  // ---- FIM DA VERIFICAÇÃO ----
 });
