@@ -24,17 +24,20 @@ function generateTotpSecret() {
 
 async function validateTotpBackend(token: string, secret: string): Promise<boolean> {
   try {
-    const res = await fetch('http://localhost:4000/api/validate-totp', {
+    const res = await fetch('/api/validate-totp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, secret }),
     });
+
     const data = await res.json();
     return !!data.valid;
-  } catch {
+  } catch (err) {
+    console.error("Erro no fetch:", err);
     return false;
   }
 }
+
 
 // SEGREDO FIXO PARA TESTE (deve ser igual ao backend)
 const FIXED_SECRET = 'JBSWY3DPEHPK3PXP';
