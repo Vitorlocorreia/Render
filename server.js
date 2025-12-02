@@ -29,7 +29,10 @@ app.post('/api/validate-totp', (req, res) => {
 // --- Servir o Frontend ---
 // Para qualquer outra rota, sirva o index.html do frontend
 // Isso é essencial para Single-Page Applications (SPA) como o React
-app.get(/.*/', (req, res) => {
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
